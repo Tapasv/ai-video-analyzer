@@ -1,0 +1,10 @@
+flask
+flask-cors
+openai-whisper
+moviepy==1.0.3
+hsemotion-onnx
+transformers
+torch
+numpy
+opencv-python-headless
+gunicorn
