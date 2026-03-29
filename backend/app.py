@@ -17,7 +17,7 @@ from analyzer.scorer import compute_score
 app = Flask(__name__)
 
 # Allow ALL origins — fixes CORS for any frontend domain
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, origins=["https://ai-video-analyzer-three.vercel.app", "http://localhost:3000"])
 
 ALLOWED_EXTENSIONS = {"mp4", "mov", "avi", "webm", "mkv"}
 app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
