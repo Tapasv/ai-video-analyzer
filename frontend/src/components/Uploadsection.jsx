@@ -6,9 +6,6 @@ import {
 } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import VideoFileIcon from '@mui/icons-material/VideoFile'
-
-// The backend URL — in production this will be your Render.com URL
-// During local development it points to localhost
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 export default function UploadSection({ onResults }) {
