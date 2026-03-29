@@ -42,7 +42,9 @@ def add_cors_headers(response):
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "ok"})
+    import shutil
+    ffmpeg = shutil.which("ffmpeg")
+    return jsonify({"status": "ok", "ffmpeg": ffmpeg})
 
 
 @app.route("/analyze", methods=["POST", "OPTIONS"])
