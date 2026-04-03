@@ -16,7 +16,6 @@ from analyzer.scorer import compute_score
 
 app = Flask(__name__)
 
-# Allow ALL origins — fixes CORS for any frontend domain
 CORS(app, origins=["https://ai-video-analyzer-three.vercel.app", "http://localhost:3000"])
 
 ALLOWED_EXTENSIONS = {"mp4", "mov", "avi", "webm", "mkv"}
@@ -29,29 +28,21 @@ def allowed_file(filename):
 
 @app.after_request
 def add_cors_headers(response):
-    """
-    This function runs after every request and manually adds
-    CORS headers to every response — even error responses.
-    This is a safety net in case flask-cors misses anything.
-    """
     response.headers["Access-Control-Allow-Origin"]  = "*"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     return response
 
 
+# Simple lightweight health check — just returns ok
+# UptimeRobot pings this every 14 minutes to keep server awake
 @app.route("/health", methods=["GET"])
 def health():
-    import shutil
-    ffmpeg = shutil.which("ffmpeg")
-    return jsonify({"status": "ok", "ffmpeg": ffmpeg})
+    return jsonify({"status": "ok"}), 200
 
 
 @app.route("/analyze", methods=["POST", "OPTIONS"])
 def analyze():
-    # Handle preflight OPTIONS request from browser
-    # Browser sends OPTIONS first to check if CORS is allowed
-    # before sending the actual POST request
     if request.method == "OPTIONS":
         return jsonify({"status": "ok"}), 200
 
@@ -71,8 +62,8 @@ def analyze():
             file.save(tmp_video.name)
             video_path = tmp_video.name
 
-        audio_path    = extract_audio_from_video(video_path)
-        transcript    = transcribe_audio(audio_path)
+        audio_path       = extract_audio_from_video(video_path)
+        transcript       = transcribe_audio(audio_path)
         sentiment_result = analyze_sentiment(transcript["text"])
         emotion_result   = analyze_emotion(video_path)
         clarity_result   = analyze_clarity(transcript)
