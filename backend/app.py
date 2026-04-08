@@ -35,7 +35,6 @@ def add_cors_headers(response):
 
 
 # Simple lightweight health check — just returns ok
-# UptimeRobot pings this every 14 minutes to keep server awake
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok"}), 200
